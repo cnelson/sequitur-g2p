@@ -109,4 +109,5 @@ setup(
     install_requires=required,
     py_modules = sequiturModules,
     ext_modules = [sequiturExtension],
+    py_modeules = ['sequitur_'],
     scripts = sequiturScripts)
