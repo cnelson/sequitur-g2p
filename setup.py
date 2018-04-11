@@ -28,18 +28,19 @@ negligent actions or intended actions or fraudulent concealment.
 import os
 
 from setuptools import setup, Extension
-from setuptools.command.install import install
 
 import numpy
 
 with open('requirements.txt') as fp:
     required = fp.read().splitlines()
 
-class BuildExtFirst(install):
+
+from setuptools.command.build_py import build_py as _build_py
+
+class build_py(_build_py):
     def run(self):
         self.run_command("build_ext")
-        return install.run(self)
-
+        return super().run()
 
 sequiturExtension = Extension(
     '_sequitur_',
@@ -116,5 +117,6 @@ setup(
     install_requires=required,
     py_modules  = sequiturModules,
     ext_modules = [sequiturExtension],
-    cmdclass    = {"install": BuildExtFirst},
+    cmdclass = {'build_py' : build_py},
     scripts = sequiturScripts)
+
