@@ -27,31 +27,12 @@ negligent actions or intended actions or fraudulent concealment.
 
 import os
 
-from distutils.command.build import build
-from setuptools.command.bdist_egg import bdist_egg
 from setuptools import setup, Extension
 
 import numpy
 
 with open('requirements.txt') as fp:
     required = fp.read().splitlines()
-
-class CustomBuild(build):
-    """Custom build class to swig before handling python modules."""
-    sub_commands = [
-        ('build_ext', build.has_ext_modules),
-        ('build_py', build.has_pure_modules),
-        ('build_clib', build.has_c_libraries),
-        ('build_scripts', build.has_scripts)
-    ]
-
-class CustomBdistEgg(bdist_egg):
-    sub_commands = [
-        ('build_ext', build.has_ext_modules),
-        ('build_py', build.has_pure_modules),
-        ('build_clib', build.has_c_libraries),
-        ('build_scripts', build.has_scripts)
-    ]
 
 sequiturExtension = Extension(
     '_sequitur_',
@@ -125,7 +106,6 @@ setup(
     version     = '1.0a1',
     description = 'sequence and joint-sequence modelling tool',
     author      = 'Maximilian Bisani',
-    cmdclass    = {'build': CustomBuild, 'bdist_egg': CustomBdistEgg},
     install_requires=required,
     py_modules = sequiturModules,
     ext_modules = [sequiturExtension],
